@@ -1,4 +1,4 @@
-baseURL = "http://example.org/"
+baseURL = "https://atfg-profile-sample.onrender.com/"
 languageCode = "en-us"
 title = "Profile"
 theme = "m10c"
