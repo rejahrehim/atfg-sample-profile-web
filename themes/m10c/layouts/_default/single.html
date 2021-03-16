@@ -1,0 +1,64 @@
+{{ define "main" }}
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">Profile Info</h1>
+      {{- if ne .Type "page" }}
+      <div class="post-meta">
+        {{- with .Params.tags }}
+        <p class="aoe"></p>
+        <p class="k"></p>
+        <p class="date"></p>
+        <h3 >Github Details:</h3>
+        <p class="git"></p>
+        {{- end }}
+      </div>
+      {{- end }}
+    </header>
+    <div class="post-content">
+      {{ .Content }}
+    </div>
+    <div class="post-footer">
+      {{ template "_internal/disqus.html" . }}
+    </div>
+    <script>
+        var queryString =  window.location.search.slice(1,-1);
+        $.getJSON('https://api.atfg.gtechindia.org/profile/'+queryString, function(data,status) {
+          if (data.message) {
+            console.log(data.message)
+          }
+          else{
+
+
+            date = data.joinedDate
+            const unixTimestamp = date
+
+            const milliseconds = date * 1000 // 1575909015000
+
+            const dateObject = new Date(milliseconds)
+
+            const humanDateFormat = dateObject.toLocaleString() //2019-12-9 10:30:15
+
+            text =``
+
+            $(".aoe").html(`Area of interests: ${data.areaOfInterests}`);
+            $(".k").html(`Karma: ${data.karma}`);
+            $(".date").html(`Joined Date: ${humanDateFormat}`);
+            dic = data.gitData
+            console.log(Object.keys(dic).length)
+            var text =``
+            if (Object.keys(dic).length >0){
+              for (var key in dic) {
+                text = text + `${key} : ${dic[key]}<br><br>`
+                console.log(key, dic[key])
+              }
+            }
+            else{
+              $(".git").html(text);
+            }
+            
+          }
+        });
+          
+        </script>
+  </article>
+{{ end }}
