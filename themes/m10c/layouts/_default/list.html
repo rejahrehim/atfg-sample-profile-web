@@ -4,7 +4,7 @@
     <p class="aoe"></p>
     <p class="k"></p>
     <p class="date"></p>
-    <h3 >Github Details:</h3>
+    <h3 class="github" ></h3>
     <p class="git"></p>
     {{ partial "pagination.html" $ }}
     <script>
@@ -12,6 +12,7 @@
       $.getJSON('https://api.atfg.gtechindia.org/profile/'+queryString, function(data,status) {
         if (data.message) {
           console.log(data.message)
+          $(".git").html(data.message);
         }
         else{
 
@@ -25,24 +26,23 @@
 
           const humanDateFormat = dateObject.toLocaleString()
 
-          text =``
-
-          $(".aoe").html(`Area of interests: ${data.areaOfInterests}`);
-          $(".k").html(`Karma: ${data.karma}`);
-          $(".date").html(`Joined Date: ${humanDateFormat}`);
-          dic = data.gitData
-          console.log(Object.keys(dic).length)
           var text =``
+          // text = text + `<table style="width:105%"><tr><td>Area of Interest</td><td>:  ${data.areaOfInterests}</td></tr><tr><td>Karma</td><td>:  ${data.karma}</td></tr><tr><td>Joined Date</td><td>:  ${humanDateFormat}</td></tr><table>`
+          // $(".aoe").html(text);
+          $(".aoe").html(`Area of Interests :   ${data.areaOfInterests}`);
+          $(".k").html(`Karma :   ${data.karma}`);
+          $(".date").html(`Joined Date :   ${humanDateFormat}`);
+          dic = data.gitData
+          // console.log(Object.keys(dic).length)
+          text = ``
           if (Object.keys(dic).length >0){
-            for (var key in dic) {
-              text = text + `${key} : ${dic[key]}<br><br>`
-              console.log(key, dic[key])
-            }
-          }
-          else{
+            text = text + `User ID :  ${dic['git_id']}<br>Repositories :  ${dic['repos']}<br>Commits :  ${dic['commits']}<br>Forks :  ${dic['forks']}`
+            // text = text + `<table style="width:50%"><tr><td>User ID</td><td>:  ${dic['git_id']}</td></tr><tr><td>Repositories</td><td>:  ${dic['repos']}</td></tr><tr><td>Commits</td><td>:  ${dic['commits']}</td></tr><tr><td>Forks</td><td>:  ${dic['forks']}</td></tr><table>`
+            $(".github").html('Github Details:');
             $(".git").html(text);
-          }
-          
+          }else{
+              console.log("No Github Profile Found")
+            }
         }
       });
         
